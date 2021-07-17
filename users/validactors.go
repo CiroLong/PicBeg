@@ -9,7 +9,7 @@ import (
 type LoginValidator struct {
 	User struct {
 		Username string `json:"username" form:"username" binding:"required,alphanum,min=4,max=255"`
-		Password string `json:"password" form:"password" binding:"required,min=8,max=255"`
+		Password string `json:"password" form:"password" binding:"required,min=2,max=255"`
 	} `json:"user"`
 	UserModel UserModel `json:"-"`
 }

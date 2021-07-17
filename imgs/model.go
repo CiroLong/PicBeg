@@ -32,7 +32,7 @@ func NewImg(filename, username string) error {
 func FindOneImg(filename, username string) (ImgModel, error) {
 	db := common.GetDB()
 	var model ImgModel
-	result := db.Where("username = ?, filename = ?", username, filename).First(&model)
+	result := db.Where("owner_username = ? AND file_name = ?", username, filename).First(&model)
 	if result.RowsAffected == 0 {
 		return model, errors.New("no such user")
 	} else {

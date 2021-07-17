@@ -3,6 +3,7 @@ package users
 import (
 	"WebSummerCamp/common"
 	"errors"
+	"os"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -13,16 +14,11 @@ type UserModel struct {
 	PasswordHash string `gorm:"column:password;not null"`
 }
 
-func AutoMigrate() {
-	db := common.DB
-	db.AutoMigrate(&UserModel{})
-}
-
 func NewUser(username, password string) error {
 	db := common.GetDB()
 
 	if len(password) == 0 {
-		return errors.New("password shoule not be empty!")
+		return errors.New("password shoule not be empty")
 	}
 	//password hash
 	bytepassword := []byte(password)
@@ -33,6 +29,7 @@ func NewUser(username, password string) error {
 		PasswordHash: string(passwordHash),
 	}
 	db.Create(&user)
+	os.MkdirAll("./stored_imgs/"+username, os.ModePerm)
 	return nil
 }
 

@@ -13,7 +13,11 @@ func main() {
 	r := gin.Default()
 	db := common.Init()
 	defer db.Close()
-	users.AutoMigrate()
+	db.AutoMigrate(&users.UserModel{})
+	db.AutoMigrate(&imgs.ImgModel{})
+
+	// 为 multipart forms 设置较低的内存限制 (默认是 32 MiB)
+	r.MaxMultipartMemory = 8 << 20 // 8 MiB
 
 	imgchange := r.Group("/api/img")
 	imgchange.Use(Login)
