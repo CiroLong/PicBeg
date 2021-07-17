@@ -3,7 +3,6 @@ package main
 import (
 	"WebSummerCamp/common"
 	"WebSummerCamp/users"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -69,6 +68,6 @@ func Login(c *gin.Context) {
 			return
 		}
 	}
-	fmt.Println(L)
+	//fmt.Println(L)
 	//else OK
 }

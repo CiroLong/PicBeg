@@ -3,7 +3,6 @@ package users
 import (
 	"WebSummerCamp/common"
 	"errors"
-	"fmt"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -33,7 +32,6 @@ func NewUser(username, password string) error {
 		UserName:     username,
 		PasswordHash: string(passwordHash),
 	}
-	fmt.Println(user)
 	db.Create(&user)
 	return nil
 }
@@ -41,7 +39,6 @@ func NewUser(username, password string) error {
 func FindOneUser(username string) (UserModel, error) {
 	db := common.GetDB()
 	var user UserModel
-	fmt.Println(username)
 	result := db.Where("username = ?", username).First(&user)
 	if result.RowsAffected == 0 {
 		return user, errors.New("no such user")
