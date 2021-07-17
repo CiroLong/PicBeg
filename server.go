@@ -2,6 +2,7 @@ package main
 
 import (
 	"WebSummerCamp/common"
+	"WebSummerCamp/imgs"
 	"WebSummerCamp/users"
 	"net/http"
 
@@ -16,13 +17,19 @@ func main() {
 
 	imgchange := r.Group("/api/img")
 	imgchange.Use(Login)
-	imgchange.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 200,
-			"msg":  "ok",
-		})
-	})
+	{
+		imgchange.GET("/:name/:imgname", imgs.GetFunc)
+		imgchange.PUT("/:name/:imgname", imgs.PutFunc)
+		imgchange.POST("/:name/:imgname", imgs.PostFunc)
+		imgchange.DELETE("/:name/:imgname", imgs.DeleteFunc)
 
+		imgchange.GET("/", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{
+				"code": 200,
+				"msg":  "login ok",
+			})
+		})
+	}
 	testpath := r.Group("/api/ping")
 	testpath.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
