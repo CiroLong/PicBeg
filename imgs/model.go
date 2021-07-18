@@ -40,6 +40,16 @@ func FindOneImg(filename, username string) (ImgModel, error) {
 	}
 }
 
+func FindAllImgs(username string) ([]ImgModel, error) {
+	db := common.GetDB()
+	var models []ImgModel
+	result := db.Where("owner_username = ?", username).Find(&models)
+	if result.RowsAffected == 0 {
+		return models, errors.New("no img exist")
+	}
+	return models, nil
+}
+
 func UpdateImg(model ImgModel) error {
 	db := common.GetDB()
 	db.Model(&model).Update()
@@ -50,4 +60,8 @@ func DeleteImg(model ImgModel) error {
 	db := common.GetDB()
 	db.Delete(&model)
 	return nil
+}
+
+func (i *ImgModel) GetPath() string {
+	return i.Path
 }

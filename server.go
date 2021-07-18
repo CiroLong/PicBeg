@@ -23,10 +23,10 @@ func main() {
 	imgchange.Use(Login)
 	{
 		imgchange.GET("/:name/:imgname", imgs.GetFunc)
-		imgchange.PUT("/:name/:imgname", imgs.PutFunc)
-		imgchange.POST("/:name/:imgname", imgs.PostFunc)
+		imgchange.PUT("/:name/:imgname", imgs.PutFunc)   //更新
+		imgchange.POST("/:name/:imgname", imgs.PostFunc) //新建
 		imgchange.DELETE("/:name/:imgname", imgs.DeleteFunc)
-
+		imgchange.GET("/:name", imgs.GetAllPath)
 		imgchange.GET("/", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"code": 200,
