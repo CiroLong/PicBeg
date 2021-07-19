@@ -9,7 +9,7 @@ import (
 
 type ImgModel struct {
 	gorm.Model
-	FileName      string `gorm:"filename"`
+	FileName      string `gorm:"column:filename"`
 	Path          string `gorm:"column:path"` //path in local such as "/stored_imgs/jack/test.img"
 	OwnerUserName string `gorm:"column:owner_username"`
 }
