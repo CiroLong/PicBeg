@@ -2,6 +2,7 @@ package main
 
 import (
 	"WebSummerCamp/common"
+	"WebSummerCamp/controller"
 	"WebSummerCamp/imgs"
 	"WebSummerCamp/users"
 	"net/http"
@@ -20,7 +21,7 @@ func main() {
 	r.MaxMultipartMemory = 8 << 20 // 8 MiB
 
 	imgchange := r.Group("/api/img")
-	imgchange.Use(Login)
+	imgchange.Use(controller.Login)
 	{
 		imgchange.GET("/:name/:imgname", imgs.GetFunc)
 		imgchange.PUT("/:name/:imgname", imgs.PutFunc)   //更新
@@ -42,43 +43,4 @@ func main() {
 	})
 
 	r.Run(":8080")
-}
-
-func Login(c *gin.Context) {
-	//get data
-
-	L := users.NewLoginValidator()
-	err := L.Bind(c)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"msg": "Invalid patterns",
-		})
-		c.Abort()
-		return
-	}
-	//check data in database
-	L.UserModel, err = users.FindOneUser(L.User.Username)
-	if err != nil {
-		err2 := users.NewUser(L.User.Username, L.User.Password) //new user
-		if err2 != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"msg": err2,
-			})
-			c.Abort()
-			return
-		}
-	} else {
-		//check the password
-
-		err3 := L.UserModel.CheckPassword(L.User.Password)
-		if err3 != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"msg": "wrong password!",
-			})
-			c.Abort()
-			return
-		}
-	}
-	//fmt.Println(L)
-	//else OK
 }
